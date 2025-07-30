@@ -1,106 +1,92 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>ePCR Narrative Generator - Full Version</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding-bottom: 100px;
-        }
-        textarea, input {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 8px;
-            font-size: 14px;
-        }
-        label {
-            font-weight: bold;
-        }
-        #output {
-            margin-top: 30px;
-            padding: 15px;
-            border: 2px solid #ccc;
-            white-space: pre-wrap;
-            height: 400px;
-            overflow-y: auto;
-            background: #f9f9f9;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ePCR Narrative Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 1rem; max-width: 800px; margin: auto; }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input, textarea, select { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
+    button { margin-top: 1rem; padding: 0.75rem; font-size: 1rem; }
+    #output { margin-top: 2rem; white-space: pre-wrap; border: 1px solid #ccc; padding: 1rem; background: #f9f9f9; }
+  </style>
 </head>
 <body>
-    <h2>ePCR Narrative Generator - Full Version</h2>
+  <h2>ePCR Narrative Generator</h2>
 
-    <label for="unit">Unit Number:</label>
-    <input type="text" id="unit">
+  <form id="epcr-form">
+    <label>Number <input type="text" name="Number"></label>
+    <label>Address <input type="text" name="Address"></label>
+    <label>chief Complaint <input type="text" name="chief Complaint"></label>
+    <label>Additional units <input type="text" name="Additional units"></label>
+    <label>Age <input type="text" name="Age"></label>
+    <label>M/F <input type="text" name="M/F"></label>
+    <label>position <input type="text" name="position"></label>
+    <label>pertinent information (1) <input type="text" name="pertinent information1"></label>
+    <label>pertinent information (2) <input type="text" name="pertinent information2"></label>
+    <label>is/is not <input type="text" name="is/is not"></label>
+    <label>Yes/No changes in medications <input type="text" name="Yes/No changes"></label>
+    <label>yes/no recent injuries or illness <input type="text" name="recent injuries"></label>
+    <label>in position found <input type="text" name="in position"></label>
+    <label>In care of <input type="text" name="In care of"></label>
+    <label>condition/color/temp <input type="text" name="condition"></label>
+    <label>Good/Poor turgor <input type="text" name="turgor"></label>
+    <label>Pupils <input type="text" name="Pupils"></label>
+    <label># mm <input type="text" name="Pupil size"></label>
+    <label>Fluid from ears/nose <input type="text" name="Fluid"></label>
+    <label>Breath sounds <input type="text" name="Breath sounds"></label>
+    <label>Abd tenderness <input type="text" name="Abd"></label>
+    <label>Masses or distension <input type="text" name="Masses"></label>
+    <label>Extremities <input type="text" name="Extremities"></label>
+    <label>Moves all equally <input type="text" name="Moves"></label>
+    <label>Distal pulses <input type="text" name="Pulses"></label>
+    <label>CBG <input type="text" name="CBG"></label>
+    <label>further treatment and moving <input type="text" name="Treatment"></label>
+    <label>Transport mode <input type="text" name="Transport"></label>
+    <label>yellow/red <input type="text" name="Severity"></label>
+    <label>hospital <input type="text" name="Hospital"></label>
+    <label>Changes en route <input type="text" name="Changes"></label>
+    <label>Interventions en route <input type="text" name="Interventions"></label>
+    <label>Arrived with/without incident <input type="text" name="Arrival"></label>
+    <label>ER room <input type="text" name="Room"></label>
+    <label>how did they move to bed <input type="text" name="Bed movement"></label>
+    <label>with or without incident (transfer) <input type="text" name="Transfer"></label>
+    <label>unit number <input type="text" name="unit number"></label>
+    <button type="button" onclick="generateNarrative()">Generate Narrative</button>
+  </form>
 
-    <label for="response">Response Details:</label>
-    <textarea id="response">Responded to [location/type of call] for a [age/gender] patient with [chief complaint or mechanism]. rows="3"></textarea>
+  <div id="output"></div>
 
-    <label for="arrival">Arrival Details:</label>
-    <textarea id="arrival">On arrival, patient found [position/location]. Initial impression: [general appearance]. rows="3"></textarea>
-
-    <label for="assessment">Assessment Findings:</label>
-    <textarea id="assessment">Upon arrival, patient was [alert/oriented/unresponsive]. Skin was [warm/dry/pale/diaphoretic]. Pupils were [equal/reactive]. Lungs [clear/CTA/wheezes/rales]. Stroke Scales: VAN negative, CPSS negative. rows="4"></textarea>
-
-    <label for="treatment">Treatment Provided:</label>
-    <textarea id="treatment">Primary and secondary assessment. Vital signs obtained and monitored, as noted. IV established in [site] with [gauge] catheter, with tegaderm and tape. [Additional treatments or meds administered]. in [site] with [gauge] catheter, with tegaderm and tape. [Additional treatments or meds administered]. rows="4"></textarea>
-
-    <label for="transport">Transport Summary:</label>
-    <textarea id="transport">Transport routine, green/yellow/red to MMH. Patient monitored during transport. rows="3"></textarea>
-
-    <label for="toc">Transfer of Care:</label>
-    <textarea id="toc">Pt taken to [ER room] upon arrival. Report given to RN at bedside. Pt assisted to bed via [method]. Care of patient transferred to facility rows="3"></textarea>
-
-    <label for="delay">Delays or Outcome Statement:</label>
-    <input type="text" id="delay" placeholder="e.g., without incident, delayed due to...">
-
-    <button onclick="generateNarrative()">Generate Narrative</button>
-
-    <div id="output" readonly></div>
-
-    <script>
-        function generateNarrative() {
-            const unit = document.getElementById('unit').value;
-            const response = document.getElementById('response').value;
-            const arrival = document.getElementById('arrival').value;
-            const assessment = document.getElementById('assessment').value;
-            const treatment = document.getElementById('treatment').value;
-            const transport = document.getElementById('transport').value;
-            const toc = document.getElementById('toc').value;
-            const delay = document.getElementById('delay').value || 'without incident';
-
-            const narrative = 
-`Dispatch/Response:
-Manatee County EMS Alpha ${unit} responded emergency traffic by ECC. ${response}
+  <script>
+    function generateNarrative() {
+      const form = document.forms['epcr-form'];
+      const values = Object.fromEntries(new FormData(form).entries());
+      const narrative = `Dispatch/Response:
+Manatee County EMS Alpha ${values['Number']} dispatched emergency traffic by ECC to ${values['Address']} for a ${values['chief Complaint']}. Arrived w/out incident. ${values['Additional units']}.
 
 Arrival:
-${arrival}
+Pt is found  to be a ${values['Age']}YO${values['M/F']} who is found to be ${values['position']}. Pt states that ${values['pertinent information1']}. Denies ${values['pertinent information2']}. States he ${values['is/is not']} compliant with all medications as prescribed. ${values['Yes/No changes']} changes in medications reported. States ${values['recent injuries']} recent injuries or illness. 
 
 Assessment:
-${assessment} Stroke Scales: VAN negative, CPSS negative.
+Pt presents ${values['in position']} ${values['In care of']}. Skin noted to be ${values['condition']}. ${values['turgor']} skin turgor noted. Pupils ${values['Pupils']}, ${values['Pupil size']}mm. ${values['Fluid']} fluid noted from ears or nose. Trachea midline, no JVD noted. Mucous membranes appear intact and moist. Breath sounds ${values['Breath sounds']}, equal rise and fall noted bilat. Abd ${values['Abd']} to palpation. ${values['Masses']} masses or distension noted. Extremities ${values['Extremities']}. Moves ${values['Moves']}. Distal pulses ${values['Pulses']}. CBG noted to be ${values['CBG']}mg/dL. Negative CPSS and VAN. 
 
 Treatment:
-${treatment}
+Primary and secondary assessment. Vital signs obtained and monitored, as noted. ${values['Treatment']}.
 
 Transport:
-${transport}
+Transport ${values['Transport']} ${values['Severity']} to ${values['Hospital']}. Pt monitored during transport. ${values['Changes']}. ${values['Interventions']}. Arrived ${values['Arrival']}. Pt taken into ED via stretcher.
 
 Transfer of Care:
-${toc} ${delay}.
+Pt taken to ER ${values['Room']} upon arrival. Pt ${values['Bed movement']}. Report given to RN at bedside. Care of patient transferred to facility ${values['Transfer']}.
+MCEMS A${values['unit number']} back in service.
 
-—End of Narrative—
+--End of Narrative--
 
-//N. Zecco M010888, FP-C, C-NPT, EMT-P//`;
+//N. Zecco M010888, FP-C, EMT-P//`;
 
-            document.getElementById('output').innerText = narrative;
-        }
-    </script>
+      document.getElementById('output').textContent = narrative;
+    }
+  </script>
 </body>
 </html>
