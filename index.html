@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ePCR Narrative Generator - Full Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding-bottom: 100px;
+        }
+        textarea, input {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 8px;
+            font-size: 14px;
+        }
+        label {
+            font-weight: bold;
+        }
+        #output {
+            margin-top: 30px;
+            padding: 15px;
+            border: 2px solid #ccc;
+            white-space: pre-wrap;
+            height: 400px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>ePCR Narrative Generator - Full Version</h2>
+
+    <label for="unit">Unit Number:</label>
+    <input type="text" id="unit">
+
+    <label for="response">Response Details:</label>
+    <textarea id="response" rows="3"></textarea>
+
+    <label for="arrival">Arrival Details:</label>
+    <textarea id="arrival" rows="3"></textarea>
+
+    <label for="assessment">Assessment Findings:</label>
+    <textarea id="assessment" rows="4"></textarea>
+
+    <label for="treatment">Treatment Provided:</label>
+    <textarea id="treatment" rows="4"></textarea>
+
+    <label for="transport">Transport Summary:</label>
+    <textarea id="transport" rows="3"></textarea>
+
+    <label for="toc">Transfer of Care:</label>
+    <textarea id="toc" rows="3"></textarea>
+
+    <label for="delay">Delays or Outcome Statement:</label>
+    <input type="text" id="delay" placeholder="e.g., without incident, delayed due to...">
+
+    <button onclick="generateNarrative()">Generate Narrative</button>
+
+    <div id="output" readonly></div>
+
+    <script>
+        function generateNarrative() {
+            const unit = document.getElementById('unit').value;
+            const response = document.getElementById('response').value;
+            const arrival = document.getElementById('arrival').value;
+            const assessment = document.getElementById('assessment').value;
+            const treatment = document.getElementById('treatment').value;
+            const transport = document.getElementById('transport').value;
+            const toc = document.getElementById('toc').value;
+            const delay = document.getElementById('delay').value || 'without incident';
+
+            const narrative = 
+`Dispatch/Response:
+Manatee County EMS Alpha ${unit} responded emergency traffic by ECC. ${response}
+AGENCY_UNIT: Manatee County EMS Alpha ${unit}, RESPONSE_MODE: emergency traffic. Dispatched by DISPATCH_CENTER: ECC. ${response}
+
+Arrival:
+${arrival}
+
+Assessment:
+${assessment} Stroke Scales: VAN negative, CPSS negative.
+
+Treatment:
+${treatment}
+
+Transport:
+${transport}
+
+Transfer of Care:
+${toc} ${delay}.
+
+—End of Narrative—
+
+//N. Zecco M010888, FP-C, C-NPT, EMT-P//`;
+
+            document.getElementById('output').innerText = narrative;
+        }
+    </script>
+</body>
+</html>
