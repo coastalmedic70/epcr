@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,58 +6,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ePCR Narrative Generator</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 1rem; max-width: 800px; margin: auto; }
-    label { display: block; margin-top: 1rem; font-weight: bold; }
-    input, textarea, select { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
-    button { margin-top: 1rem; padding: 0.75rem; font-size: 1rem; }
-    #output { margin-top: 2rem; white-space: pre-wrap; border: 1px solid #ccc; padding: 1rem; background: #f9f9f9; }
+    body { font-family: Arial, sans-serif; padding: 1rem; margin: auto; }
+    .container {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    form {
+      flex: 1;
+      max-width: 48%;
+    }
+    #output {
+      flex: 1;
+      max-width: 48%;
+      height: 90vh;
+      white-space: pre-wrap;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      background: #f9f9f9;
+      overflow-y: auto;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body>
   <h2>ePCR Narrative Generator</h2>
+  <div class="container">
+    <form id="epcr-form">
+      <label>Number <input type="text" name="Number"></label>
+      <label>Address <input type="text" name="Address"></label>
+      <label>chief Complaint <input type="text" name="chief Complaint"></label>
+      <label>Additional units <input type="text" name="Additional units"></label>
+      <label>Age <input type="text" name="Age"></label>
+      <label>M/F <input type="text" name="M/F"></label>
+      <label>position <input type="text" name="position"></label>
+      <label>pertinent information (1) <input type="text" name="pertinent information1"></label>
+      <label>pertinent information (2) <input type="text" name="pertinent information2"></label>
+      <label>is/is not <input type="text" name="is/is not"></label>
+      <label>Yes/No changes in medications <input type="text" name="Yes/No changes"></label>
+      <label>yes/no recent injuries or illness <input type="text" name="recent injuries"></label>
+      <label>in position found <input type="text" name="in position"></label>
+      <label>In care of <input type="text" name="In care of"></label>
+      <label>condition/color/temp <input type="text" name="condition"></label>
+      <label>Good/Poor turgor <input type="text" name="turgor"></label>
+      <label>Pupils <input type="text" name="Pupils"></label>
+      <label># mm <input type="text" name="Pupil size"></label>
+      <label>Fluid from ears/nose <input type="text" name="Fluid"></label>
+      <label>Breath sounds <input type="text" name="Breath sounds"></label>
+      <label>Abd tenderness <input type="text" name="Abd"></label>
+      <label>Masses or distension <input type="text" name="Masses"></label>
+      <label>Extremities <input type="text" name="Extremities"></label>
+      <label>Moves all equally <input type="text" name="Moves"></label>
+      <label>Distal pulses <input type="text" name="Pulses"></label>
+      <label>CBG <input type="text" name="CBG"></label>
+      <label>further treatment and moving <input type="text" name="Treatment"></label>
+      <label>Transport mode <input type="text" name="Transport"></label>
+      <label>yellow/red <input type="text" name="Severity"></label>
+      <label>hospital <input type="text" name="Hospital"></label>
+      <label>Changes en route <input type="text" name="Changes"></label>
+      <label>Interventions en route <input type="text" name="Interventions"></label>
+      <label>Arrived with/without incident <input type="text" name="Arrival"></label>
+      <label>ER room <input type="text" name="Room"></label>
+      <label>how did they move to bed <input type="text" name="Bed movement"></label>
+      <label>with or without incident (transfer) <input type="text" name="Transfer"></label>
+      <label>unit number <input type="text" name="unit number"></label>
+      <button type="button" onclick="generateNarrative()">Generate Narrative</button>
+    </form>
 
-  <form id="epcr-form">
-    <label>Number <input type="text" name="Number"></label>
-    <label>Address <input type="text" name="Address"></label>
-    <label>chief Complaint <input type="text" name="chief Complaint"></label>
-    <label>Additional units <input type="text" name="Additional units"></label>
-    <label>Age <input type="text" name="Age"></label>
-    <label>M/F <input type="text" name="M/F"></label>
-    <label>position <input type="text" name="position"></label>
-    <label>pertinent information (1) <input type="text" name="pertinent information1"></label>
-    <label>pertinent information (2) <input type="text" name="pertinent information2"></label>
-    <label>is/is not <input type="text" name="is/is not"></label>
-    <label>Yes/No changes in medications <input type="text" name="Yes/No changes"></label>
-    <label>yes/no recent injuries or illness <input type="text" name="recent injuries"></label>
-    <label>in position found <input type="text" name="in position"></label>
-    <label>In care of <input type="text" name="In care of"></label>
-    <label>condition/color/temp <input type="text" name="condition"></label>
-    <label>Good/Poor turgor <input type="text" name="turgor"></label>
-    <label>Pupils <input type="text" name="Pupils"></label>
-    <label># mm <input type="text" name="Pupil size"></label>
-    <label>Fluid from ears/nose <input type="text" name="Fluid"></label>
-    <label>Breath sounds <input type="text" name="Breath sounds"></label>
-    <label>Abd tenderness <input type="text" name="Abd"></label>
-    <label>Masses or distension <input type="text" name="Masses"></label>
-    <label>Extremities <input type="text" name="Extremities"></label>
-    <label>Moves all equally <input type="text" name="Moves"></label>
-    <label>Distal pulses <input type="text" name="Pulses"></label>
-    <label>CBG <input type="text" name="CBG"></label>
-    <label>further treatment and moving <input type="text" name="Treatment"></label>
-    <label>Transport mode <input type="text" name="Transport"></label>
-    <label>yellow/red <input type="text" name="Severity"></label>
-    <label>hospital <input type="text" name="Hospital"></label>
-    <label>Changes en route <input type="text" name="Changes"></label>
-    <label>Interventions en route <input type="text" name="Interventions"></label>
-    <label>Arrived with/without incident <input type="text" name="Arrival"></label>
-    <label>ER room <input type="text" name="Room"></label>
-    <label>how did they move to bed <input type="text" name="Bed movement"></label>
-    <label>with or without incident (transfer) <input type="text" name="Transfer"></label>
-    <label>unit number <input type="text" name="unit number"></label>
-    <button type="button" onclick="generateNarrative()">Generate Narrative</button>
-  </form>
-
-  <div id="output"></div>
+    <div id="output"></div>
+  </div>
 
   <script>
     function generateNarrative() {
